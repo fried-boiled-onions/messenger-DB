@@ -24,4 +24,4 @@
 1. Убедитесь, что на вашем компьютере установлен **Docker**.
 2. Склонируйте репозиторий:
    ```bash
-   git clone https://github.com/fried-boiled-onions/messenger-backend.git
+   git clone https://github.com/fried-boiled-onions/messenger-DB.git
