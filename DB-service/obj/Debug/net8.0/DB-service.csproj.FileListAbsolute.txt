@@ -1,0 +1,7 @@
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.csproj.AssemblyReference.cache
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.GeneratedMSBuildEditorConfig.editorconfig
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.AssemblyInfoInputs.cache
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.AssemblyInfo.cs
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.csproj.CoreCompileInputs.cache
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.MvcApplicationPartsAssemblyInfo.cache
+/home/stxreocoma/Desktop/Dev/messenger-DB/DB-service/obj/Debug/net8.0/DB-service.sourcelink.json
