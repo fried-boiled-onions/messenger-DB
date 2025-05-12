@@ -1,65 +1,61 @@
-using Microsoft.EntityFrameworkCore.Metadata;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-public class RabbitMQConsumer
+namespace messengerDB
 {
-    private readonly IModel _channel;
-    private readonly DbService _dbService;
-
-    public RabbitMQConsumer(IModel channel, DbService dbService)
+    public class RabbitMQConsumer
     {
-        _channel = channel;
-        _dbService = dbService;
-    }
+        private readonly IModel _channel;
+        private readonly DbService _dbService;
 
-    public void StartListening()
-    {
-        var consumer = new EventingBasicConsumer(_channel);
-        consumer.Received += async (model, ea) =>
+        public RabbitMQConsumer(IModel channel, DbService dbService)
         {
-            var body = ea.Body.ToArray();
-            var message = Encoding.UTF8.GetString(body);
-            var request = JsonSerializer.Deserialize<Request>(message);
+            _channel = channel;
+            _dbService = dbService;
+        }
 
-            if (request == null)
+        public void StartListening()
+        {
+            _channel.QueueDeclare(queue: "task_queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
+            var consumer = new AsyncEventingBasicConsumer(_channel);
+            consumer.Received += async (model, ea) =>
             {
-                Console.WriteLine("Failed to deserialize message");
-                _channel.BasicNack(ea.DeliveryTag, false, true);
-                return;
-            }
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+                var request = JsonSerializer.Deserialize<Request>(message);
 
-            switch (request.Operation)
-            {
-                case "add_user":
-                    await _dbService.AddUserAsync(
-                        request.Data["username"],
-                        request.Data["email"],
-                        request.Data["password"]
-                    );
-                    break;
+                if (request != null)
+                {
+                    switch (request.Operation)
+                    {
+                        case "add_user":
+                            await _dbService.AddUserAsync(
+                                request.Data["username"],
+                                request.Data["email"],
+                                request.Data["password"]
+                            );
+                            break;
 
-                case "send_message":
-                    await _dbService.SendMessageAsync(
-                        int.Parse(request.Data["chat_id"]),
-                        int.Parse(request.Data["sender_id"]),
-                        request.Data["content"]
-                    );
-                    break;
+                        case "send_message":
+                            await _dbService.SendMessageAsync(
+                                int.Parse(request.Data["chat_id"]),
+                                int.Parse(request.Data["sender_id"]),
+                                request.Data["content"]
+                            );
+                            break;
 
-                case "get_new_chats":
-                    var chats = await _dbService.GetNewChatsAsync(int.Parse(request.Data["user_id"]));
-                    Console.WriteLine($"Found {chats.Count()} chats");
-                    break;
+                        case "get_new_chats":
+                            var chats = await _dbService.GetNewChatsAsync(int.Parse(request.Data["user_id"]));
+                            break;
+                    }
+                }
 
-                default:
-                    Console.WriteLine("Unknown operation");
-                    break;
-            }
-        };
+                _channel.BasicAck(ea.DeliveryTag, false);
+            };
 
-        _channel.BasicConsume(queue: "task_queue", autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: "task_queue", autoAck: false, consumer: consumer);
+        }
     }
 }

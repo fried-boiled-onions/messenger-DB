@@ -1,101 +1,54 @@
-using System.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Npgsql;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
-public class DbService
+namespace messengerDB
 {
-    private readonly string _connectionString;
-    
-    public DbService(string connectionString)
+    public class DbService
     {
-        _connectionString = connectionString;
-    }
+        private readonly string _connectionString;
 
-    public async Task AddUserAsync(string username, string email, string password)
-    {
-        await using var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new NpgsqlCommand("SELECT add_user(@username, @email, @password)", connection);
-        command.Parameters.AddWithValue("username", username);
-        command.Parameters.AddWithValue("email", email);
-        command.Parameters.AddWithValue("password", password);
-
-        await command.ExecuteNonQueryAsync();
-    }
-
-    public async Task SendMessageAsync(int chatId, int senderId, string content)
-    {
-        await using var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new NpgsqlCommand("SELECT send_message(@chatId, @senderId, @content)", connection);
-        command.Parameters.AddWithValue("chatId", chatId);
-        command.Parameters.AddWithValue("senderId", senderId);
-        command.Parameters.AddWithValue("content", content);
-
-        await command.ExecuteNonQueryAsync();
-    }
-
-    public async Task<IEnumerable<Chat>> GetChatsForUserAsync(int userId)
-    {
-        var chats = new List<Chat>();
-        await using var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new NpgsqlCommand("Добавить функцию(@userId)", connection);
-        command.Parameters.AddWithValue("userId", userId);
-
-        await using var reader = await command.ExecuteReaderAsync();
-        while (await reader.ReadAsync())
+        public DbService(string connectionString)
         {
-            chats.Add(new Chat
+            _connectionString = connectionString;
+        }
+
+        public async Task AddUserAsync(string username, string email, string password)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand("CALL add_user(@p1, @p2, @p3)", conn);
+            cmd.Parameters.AddWithValue("p1", username);
+            cmd.Parameters.AddWithValue("p2", email);
+            cmd.Parameters.AddWithValue("p3", password);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task SendMessageAsync(int chatId, int senderId, string content)
+        {
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand("CALL send_message(@p1, @p2, @p3)", conn);
+            cmd.Parameters.AddWithValue("p1", chatId);
+            cmd.Parameters.AddWithValue("p2", senderId);
+            cmd.Parameters.AddWithValue("p3", content);
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+        public async Task<List<object>> GetNewChatsAsync(int userId)
+        {
+            var result = new List<object>();
+            using var conn = new NpgsqlConnection(_connectionString);
+            await conn.OpenAsync();
+            using var cmd = new NpgsqlCommand("SELECT * FROM get_new_chats(@p1)", conn);
+            cmd.Parameters.AddWithValue("p1", userId);
+            using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
             {
-                Id = reader.GetInt32(0),
-                Name = reader.GetString(1),
-                IsGroup = reader.GetBoolean(2),
-                CreatedAt = reader.GetDateTime(3),
-            });
+                // Предполагаем, что процедура возвращает chat_id
+                result.Add(new { ChatId = reader.GetInt32(0) });
+            }
+            return result;
         }
-        return chats;
-    }
-
-    public async Task AddMessageAsync(int chatId, int senderId, string content)
-    {
-        await using var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new NpgsqlCommand("Добавить функцию отправления сообщений(@chatId, @senderId, @content)", connection);
-        command.Parameters.AddWithValue("chatId", chatId);
-        command.Parameters.AddWithValue("senderId", senderId);
-        command.Parameters.AddWithValue("content", content);
-
-        await command.ExecuteNonQueryAsync();
-    }
-
-    public async Task<IEnumerable<Message>> GetMessagesForChatAsync(int chatId)
-    {
-        var messages = new List<Message>();
-        await using var connection = new NpgsqlConnection(_connectionString);
-        await connection.OpenAsync();
-
-        await using var command = new NpgsqlCommand("Добавить функцию получения сообщений по чату @chatId", connection);
-        command.Parameters.AddWithValue("chatId", chatId);
-
-        await using var reader = await command.ExecuteReaderAsync();
-        while (await reader.ReadAsync())
-        {
-            messages.Add(new Message{
-                Id = reader.GetInt32(0),
-                ChatId = reader.GetInt32(1),
-                SenderId = reader.GetInt32(2),
-                Content = reader.GetString(3),
-                Timestamp = reader.GetDateTime(4),
-                IsRead = reader.GetBoolean(5),
-            });
-        }
-
-        return messages;
     }
 }
