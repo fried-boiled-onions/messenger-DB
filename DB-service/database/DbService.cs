@@ -17,7 +17,7 @@ namespace messengerDB
         {
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
-            using var cmd = new NpgsqlCommand("CALL add_user(@p1, @p2, @p3)", conn);
+            using var cmd = new NpgsqlCommand("select add_user(@p1, @p2, @p3)", conn);
             cmd.Parameters.AddWithValue("p1", username);
             cmd.Parameters.AddWithValue("p2", email);
             cmd.Parameters.AddWithValue("p3", password);
@@ -28,7 +28,7 @@ namespace messengerDB
         {
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
-            using var cmd = new NpgsqlCommand("CALL send_message(@p1, @p2, @p3)", conn);
+            using var cmd = new NpgsqlCommand("select send_message(@p1, @p2, @p3)", conn);
             cmd.Parameters.AddWithValue("p1", chatId);
             cmd.Parameters.AddWithValue("p2", senderId);
             cmd.Parameters.AddWithValue("p3", content);
@@ -40,7 +40,7 @@ namespace messengerDB
             var result = new List<object>();
             using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
-            using var cmd = new NpgsqlCommand("SELECT * FROM get_new_chats(@p1)", conn);
+            using var cmd = new NpgsqlCommand("select get_new_chats(@p1)", conn);
             cmd.Parameters.AddWithValue("p1", userId);
             using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())

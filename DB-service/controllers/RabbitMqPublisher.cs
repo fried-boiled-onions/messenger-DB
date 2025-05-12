@@ -15,7 +15,8 @@ namespace messengerDB
             {
                 HostName = hostname,
                 UserName = username,
-                Password = password
+                Password = password,
+                Port = 5672
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
