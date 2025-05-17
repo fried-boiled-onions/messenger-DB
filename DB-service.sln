@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DB-service", "DB-service\DB-service.csproj", "{6A6E6C50-E14F-463A-9273-EC8589D1C9F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ocelot", "Ocelot\Ocelot.csproj", "{CE6FEBB8-11E9-44ED-815D-40DB0A8C925B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API-Gateway", "API-Gateway\API-Gateway.csproj", "{932771AD-C30A-430F-84E5-34DCD344FF9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{6A6E6C50-E14F-463A-9273-EC8589D1C9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A6E6C50-E14F-463A-9273-EC8589D1C9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A6E6C50-E14F-463A-9273-EC8589D1C9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE6FEBB8-11E9-44ED-815D-40DB0A8C925B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6FEBB8-11E9-44ED-815D-40DB0A8C925B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6FEBB8-11E9-44ED-815D-40DB0A8C925B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6FEBB8-11E9-44ED-815D-40DB0A8C925B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{932771AD-C30A-430F-84E5-34DCD344FF9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{932771AD-C30A-430F-84E5-34DCD344FF9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{932771AD-C30A-430F-84E5-34DCD344FF9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{932771AD-C30A-430F-84E5-34DCD344FF9F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
