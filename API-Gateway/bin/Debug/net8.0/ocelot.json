@@ -38,6 +38,6 @@
         }
     ],
     "GlobalConfiguration": {
-        "BaseUrl": "http://localhost:5004"
+        "BaseUrl": "http://localhost:5000"
     }
 }

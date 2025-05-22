@@ -128,3 +128,21 @@ begin
             raise exception 'duplicate username % already exists', new_username;
 end;
 $$ language plpgsql;
+
+create or replace function login_user(p_email varchar, p_password_hash varchar)
+returns integer as $$
+declare
+    user_id int;
+begin
+    select id into user_id
+    from users
+    where email = p_email
+      and password_hash = p_password_hash;
+    
+    if user_id is null then
+        return -1;
+    else
+        return user_id;
+    end if;
+end;
+$$ language plpgsql;

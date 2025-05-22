@@ -515,19 +515,19 @@
     ]
   },
   "packageFolders": {
-    "/home/stxreocoma/.nuget/packages/": {}
+    "/Users/stxreocoma/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/stxreocoma/Desktop/Dev/messenger-DB/API-Gateway/API-Gateway.csproj",
+      "projectUniqueName": "/Users/stxreocoma/Dev/messenger-DB/API-Gateway/API-Gateway.csproj",
       "projectName": "API-Gateway",
-      "projectPath": "/home/stxreocoma/Desktop/Dev/messenger-DB/API-Gateway/API-Gateway.csproj",
-      "packagesPath": "/home/stxreocoma/.nuget/packages/",
-      "outputPath": "/home/stxreocoma/Desktop/Dev/messenger-DB/API-Gateway/obj/",
+      "projectPath": "/Users/stxreocoma/Dev/messenger-DB/API-Gateway/API-Gateway.csproj",
+      "packagesPath": "/Users/stxreocoma/.nuget/packages/",
+      "outputPath": "/Users/stxreocoma/Dev/messenger-DB/API-Gateway/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/stxreocoma/.nuget/NuGet/NuGet.Config"
+        "/Users/stxreocoma/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -545,7 +545,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -575,7 +581,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.115/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
